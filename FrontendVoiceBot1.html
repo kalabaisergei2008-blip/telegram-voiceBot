@@ -3,170 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройка интеграции VoiceBot</title>
+    <title>Настройка VoiceBot</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* Контрастная черно-бело-серая палитра с оранжевыми акцентами */
+        :root {
+            --bg-main: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --accent: #ff6b00; /* Стильный оранжевый */
+            --accent-hover: #e05e00;
+            --border: #2c2c2c;
+        }
+
         body {
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 15px;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
             margin: 0;
+            box-sizing: border-box;
         }
-        h3 { text-align: center; margin-bottom: 15px; margin-top: 5px; color: var(--tg-theme-text-color, #000000); }
+
+        h3 { 
+            text-align: center; 
+            margin: 0 0 20px 0; 
+            font-size: 18px; 
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-main);
+        }
         
-        /* Стили для выпадающих инструкций */
+        /* Минималистичные спойлеры */
         details {
-            background-color: var(--tg-theme-secondary-bg-color, #f0f0f5);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            font-size: 13.5px;
-            border: 1px solid rgba(0,0,0,0.05);
+            background-color: var(--bg-card);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
         }
+        
         summary {
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            color: var(--tg-theme-link-color, #248bcf);
+            color: var(--accent);
             outline: none;
             user-select: none;
+            font-size: 14px;
         }
-        ol { margin: 8px 0 0 20px; padding: 0; color: var(--tg-theme-text-color, #000000); }
-        li { margin-bottom: 8px; line-height: 1.4; }
         
-        /* Выделение важных элементов */
-        .badge {
-            background-color: #ffdddd;
-            color: #d00000;
-            padding: 2px 6px;
-            border-radius: 4px;
+        ol { 
+            margin: 10px 0 0 18px; 
+            padding: 0; 
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        
+        li { 
+            margin-bottom: 6px; 
+            line-height: 1.4; 
+        }
+        
+        a {
+            color: var(--text-main);
+            text-decoration: underline;
+        }
+        
+        /* Важные маркеры */
+        .attention {
+            color: var(--accent);
             font-weight: bold;
-            font-size: 11px;
-            text-transform: uppercase;
         }
-        code { 
-            background: rgba(0,0,0,0.06); 
-            padding: 2px 5px; 
-            border-radius: 4px; 
-            font-family: monospace; 
-            font-size: 12px;
-            word-break: break-all;
-        }
-        .highlight { color: var(--tg-theme-link-color, #248bcf); font-weight: 600; }
 
-        /* Контейнеры полей ввода */
-        .form-group { margin-bottom: 20px; margin-top: 5px; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+        /* Поля ввода */
+        .form-group { 
+            margin-bottom: 24px; 
+            margin-top: 4px; 
+        }
+        
+        label { 
+            display: block; 
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px; 
+        }
+        
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid var(--tg-theme-hint-color, #ccc);
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
+            padding: 14px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-card);
+            color: var(--text-main);
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        input:focus { border-color: var(--tg-theme-button-color, #248bcf); outline: none; }
         
-        /* Кнопка отправки */
+        input::placeholder {
+            color: #555555;
+        }
+        
+        input:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+            outline: none; 
+        }
+        
+        /* Акцентная оранжевая кнопка */
         button {
             width: 100%;
-            padding: 14px;
-            background-color: var(--tg-theme-button-color, #248bcf);
-            color: var(--tg-theme-button-text-color, #ffffff);
+            padding: 16px;
+            background-color: var(--accent);
+            color: #000000; /* Черный текст на оранжевом фоне для максимального контраста */
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background-color 0.2s;
             margin-top: 10px;
-            margin-bottom: 20px;
         }
-        button:active { opacity: 0.8; }
+        
+        button:active { 
+            background-color: var(--accent-hover); 
+        }
     </style>
 </head>
 <body>
 
-    <h3>⚙️ Настройка профиля VoiceBot</h3>
+    <h3>⚙️ Подключение профиля</h3>
     
     <details>
-        <summary>📝 Шаг 1: Как получить Notion Token?</summary>
+        <summary>Как получить Notion Token?</summary>
         <ol>
-            <li>Перейдите в браузере на страницу <a href="https://www.notion.so/my-integrations" target="_blank" class="highlight">notion.so/my-integrations</a>.</li>
-            <li>Нажмите кнопку <span class="highlight">"+ New integration"</span>.</li>
-            <li>Укажите любое имя (например, <code>VoiceBot</code>), выберите ваш Workspace и нажмите <b>Submit</b>.</li>
-            <li>В меню слева откройте вкладку <b>"Secrets"</b>.</li>
-            <li>Нажмите <b>"Show"</b>, затем <b>"Copy"</b>. Токен должен начинаться на <code>ntn_...</code>.</li>
-            <li><span class="badge">Важно!</span> Откройте вашу таблицу в Notion, нажмите на <b>три точки (...)</b> вверху справа -> <span class="highlight">"Add connections"</span> и выберите созданный <code>VoiceBot</code>.</li>
+            <li>Зайдите на <a href="https://www.notion.so/my-integrations" target="_blank">notion.so/my-integrations</a>.</li>
+            <li>Нажмите <b>"+ New integration"</b>, введите имя, сохраните (Submit).</li>
+            <li>Вкладка <b>"Secrets"</b> -> нажмите <b>"Show"</b> -> <b>"Copy"</b> (токен начнется с <code>ntn_</code>).</li>
+            <li><span class="attention">Важно:</span> В самом Notion откройте нужную базу, нажмите <b>"..."</b> вверху справа -> <b>"Add connections"</b> -> выберите созданного бота.</li>
         </ol>
     </details>
-
     <div class="form-group">
-        <label for="token">Notion Integration Token:</label>
-        <input type="text" id="token" placeholder="ntn_2589...">
+        <label for="token">Notion Integration Token</label>
+        <input type="text" id="token" placeholder="ntn_...">
     </div>
 
-
     <details>
-        <summary>📝 Шаг 2: Как узнать Database ID?</summary>
+        <summary>Как найти Database ID?</summary>
         <ol>
-            <li>Откройте вашу таблицу Notion <b>как отдельную страницу</b> (кнопка <i>"Open as page"</i>).</li>
-            <li>Посмотрите на адресную строку вашего браузера.</li>
-            <li>ID — это длинный <b>32-значный набор символов</b> после последнего слэша <code>/</code> и до знака вопроса <code>?</code>.</li>
-            <li><b>Пример ссылки:</b><br>
-            <code>...notion.so/workspace/<span class="highlight">36e607a8901d803f93f7e0c3752d3ebe</span>?v=...</code><br>
-            Ваш ID: <code>36e607a8901d803f93f7e0c3752d3ebe</code>.</li>
+            <li>Откройте вашу базу данных Notion как отдельную страницу (Open as page).</li>
+            <li>Скопируйте URL из строки браузера.</li>
+            <li>ID — это 32-значный набор символов после последнего слэша <code>/</code> и до знака <code>?</code>.</li>
         </ol>
     </details>
-
     <div class="form-group">
-        <label for="db_id">Notion Database ID:</label>
-        <input type="text" id="db_id" placeholder="Вставьте 32-значный ID...">
+        <label for="db_id">Notion Database ID</label>
+        <input type="text" id="db_id" placeholder="32-значный код базы данных">
     </div>
 
-
     <details>
-        <summary>📝 Шаг 3: Как получить Gemini API Key?</summary>
+        <summary>Как получить Gemini API Key?</summary>
         <ol>
-            <li>Перейдите на официальный сайт разработчиков <a href="https://aistudio.google.com/" target="_blank" class="highlight">aistudio.google.com</a>.</li>
-            <li>Войдите под своим Google-аккаунтом.</li>
-            <li>В верхнем левом углу нажмите на кнопку <b>"Get API key"</b>.</li>
-            <li>Нажмите синюю кнопку <b>"Create API key"</b>, выберите проект (или создайте дефолтный) и скопируйте сгенерированный ключ. Он начинается на <code>AIzaSy...</code>.</li>
+            <li>Перейдите на <a href="https://aistudio.google.com/" target="_blank">aistudio.google.com</a>.</li>
+            <li>Нажмите <b>"Get API key"</b> в левом верхнем углу меню.</li>
+            <li>Нажмите <b>"Create API key"</b> и скопируйте созданную строку (начинается с <code>AIzaSy</code>).</li>
         </ol>
     </details>
-
     <div class="form-group">
-        <label for="gemini_key">Gemini API Key:</label>
+        <label for="gemini_key">Gemini API Key</label>
         <input type="password" id="gemini_key" placeholder="AIzaSy...">
     </div>
 
-    <button id="save_btn">Сохранить настройки</button>
+    <button id="save_btn">Сохранить конфигурацию</button>
 
     <script>
-        // Инициализируем Telegram WebApp контекст
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Автоматически растягиваем окно для удобства
+        tg.expand();
 
         document.getElementById('save_btn').addEventListener('click', () => {
             let token_val = document.getElementById('token').value.trim();
             let db_id_val = document.getElementById('db_id').value.trim();
             let gemini_val = document.getElementById('gemini_key').value.trim();
             
-            // Валидация на заполненность всех полей
             if (!token_val || !db_id_val || !gemini_val) {
-                alert("Пожалуйста, заполните ВСЕ три поля перед сохранением!");
+                alert("Заполните все три поля перед сохранением!");
                 return;
             }
 
-            // Упаковываем все данные в один JSON
             let configData = {
                 notion_token: token_val,
                 notion_db_id: db_id_val,
                 gemini_key: gemini_val
             };
 
-            // Отправляем пакет данных обратно в чат боту и закрываем мини-приложение
             tg.sendData(JSON.stringify(configData));
             tg.close();
         });

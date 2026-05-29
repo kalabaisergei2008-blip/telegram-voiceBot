@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройка интеграции Notion</title>
+    <title>Настройка интеграции VoiceBot</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -15,12 +15,12 @@
         }
         h3 { text-align: center; margin-bottom: 15px; margin-top: 5px; color: var(--tg-theme-text-color, #000000); }
         
-        /* Стили для подробных инструкций */
+        /* Стили для выпадающих инструкций */
         details {
             background-color: var(--tg-theme-secondary-bg-color, #f0f0f5);
             padding: 12px;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-size: 13.5px;
             border: 1px solid rgba(0,0,0,0.05);
         }
@@ -54,8 +54,8 @@
         }
         .highlight { color: var(--tg-theme-link-color, #248bcf); font-weight: 600; }
 
-        /* Поля ввода */
-        .form-group { margin-bottom: 15px; margin-top: 10px; }
+        /* Контейнеры полей ввода */
+        .form-group { margin-bottom: 20px; margin-top: 5px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
         input {
             width: 100%;
@@ -80,73 +80,94 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 16px;
-            margin-top: 15px;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
         button:active { opacity: 0.8; }
     </style>
 </head>
 <body>
 
-    <h3>⚙️ Настройка интеграции</h3>
+    <h3>⚙️ Настройка профиля VoiceBot</h3>
     
     <details>
-        <summary>📝 Подробная инструкция: Как получить Token?</summary>
+        <summary>📝 Шаг 1: Как получить Notion Token?</summary>
         <ol>
-            <li>Откройте браузер на ПК или телефоне и перейдите на сайт <a href="https://www.notion.so/my-integrations" target="_blank" class="highlight">notion.so/my-integrations</a>.</li>
-            <li>Нажмите на большую кнопку <span class="highlight">"+ New integration"</span> (Новая интеграция).</li>
-            <li>В поле <b>Name</b> введите любое имя (например, <code>VoiceBot</code>). В поле <b>Associated workspace</b> выберите вашу рабочую область. Нажмите кнопку <b>"Submit"</b> внизу.</li>
-            <li>Вы перейдете на страницу созданной интеграции. В меню слева выберите вкладку <b>"Secrets"</b>.</li>
-            <li>Нажмите кнопку <b>"Show"</b>, а затем <b>"Copy"</b>, чтобы скопировать секретный токен. Он начинается с <code>secret_...</code>. Вставьте его в поле ниже.</li>
-            <li><span class="badge">Критически важно!</span> Теперь откройте вашу таблицу (базу данных) в самом Notion. Нажмите на <b>три точки (...)</b> в правом верхнем углу экрана, прокрутите меню вниз, найдите пункт <span class="highlight">"Add connections"</span>, введите в поиске имя вашего бота и кликните по нему для подключения!</li>
+            <li>Перейдите в браузере на страницу <a href="https://www.notion.so/my-integrations" target="_blank" class="highlight">notion.so/my-integrations</a>.</li>
+            <li>Нажмите кнопку <span class="highlight">"+ New integration"</span>.</li>
+            <li>Укажите любое имя (например, <code>VoiceBot</code>), выберите ваш Workspace и нажмите <b>Submit</b>.</li>
+            <li>В меню слева откройте вкладку <b>"Secrets"</b>.</li>
+            <li>Нажмите <b>"Show"</b>, затем <b>"Copy"</b>. Токен должен начинаться на <code>ntn_...</code>.</li>
+            <li><span class="badge">Важно!</span> Откройте вашу таблицу в Notion, нажмите на <b>три точки (...)</b> вверху справа -> <span class="highlight">"Add connections"</span> и выберите созданный <code>VoiceBot</code>.</li>
         </ol>
     </details>
 
     <div class="form-group">
-        <label id="lbl_token" for="token">Notion Integration Token:</label>
-        <input type="text" id="token" placeholder="secret_...">
+        <label for="token">Notion Integration Token:</label>
+        <input type="text" id="token" placeholder="ntn_2589...">
     </div>
 
+
     <details>
-        <summary>📝 Подробная инструкция: Как узнать Database ID?</summary>
+        <summary>📝 Шаг 2: Как узнать Database ID?</summary>
         <ol>
-            <li>Откройте вашу таблицу Notion <b>как отдельную страницу</b> (не в виде всплывающего окна/саб-пейджа).</li>
-            <li>Скопируйте полную ссылку на эту страницу из адресной строки браузера.</li>
-            <li>ID базы — это длинный <b>32-значный набор букв и цифр</b>. Он находится в ссылке сразу после имени вашего воркспейса (или после последнего слэша <code>/</code>) и заканчивается <b>до</b> знака вопроса <code>?</code>.</li>
-            <li><b>Пример:</b> если ваша ссылка выглядит так:<br>
-            <code>...notion.so/my-workspace/<span class="highlight">4a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d</span>?v=...</code><br>
-            То ваш Database ID — это: <code>4a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d</code>.</li>
+            <li>Откройте вашу таблицу Notion <b>как отдельную страницу</b> (кнопка <i>"Open as page"</i>).</li>
+            <li>Посмотрите на адресную строку вашего браузера.</li>
+            <li>ID — это длинный <b>32-значный набор символов</b> после последнего слэша <code>/</code> и до знака вопроса <code>?</code>.</li>
+            <li><b>Пример ссылки:</b><br>
+            <code>...notion.so/workspace/<span class="highlight">36e607a8901d803f93f7e0c3752d3ebe</span>?v=...</code><br>
+            Ваш ID: <code>36e607a8901d803f93f7e0c3752d3ebe</code>.</li>
         </ol>
     </details>
 
     <div class="form-group">
-        <label id="lbl_db" for="db_id">Database ID:</label>
-        <input type="text" id="db_id" placeholder="Вставьте 32-значный ID таблицы...">
+        <label for="db_id">Notion Database ID:</label>
+        <input type="text" id="db_id" placeholder="Вставьте 32-значный ID...">
+    </div>
+
+
+    <details>
+        <summary>📝 Шаг 3: Как получить Gemini API Key?</summary>
+        <ol>
+            <li>Перейдите на официальный сайт разработчиков <a href="https://aistudio.google.com/" target="_blank" class="highlight">aistudio.google.com</a>.</li>
+            <li>Войдите под своим Google-аккаунтом.</li>
+            <li>В верхнем левом углу нажмите на кнопку <b>"Get API key"</b>.</li>
+            <li>Нажмите синюю кнопку <b>"Create API key"</b>, выберите проект (или создайте дефолтный) и скопируйте сгенерированный ключ. Он начинается на <code>AIzaSy...</code>.</li>
+        </ol>
+    </details>
+
+    <div class="form-group">
+        <label for="gemini_key">Gemini API Key:</label>
+        <input type="password" id="gemini_key" placeholder="AIzaSy...">
     </div>
 
     <button id="save_btn">Сохранить настройки</button>
 
     <script>
-        // Инициализация Telegram WebApp
+        // Инициализируем Telegram WebApp контекст
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Развернуть окно на максимум для удобства чтения
+        tg.expand(); // Автоматически растягиваем окно для удобства
 
         document.getElementById('save_btn').addEventListener('click', () => {
             let token_val = document.getElementById('token').value.trim();
             let db_id_val = document.getElementById('db_id').value.trim();
+            let gemini_val = document.getElementById('gemini_key').value.trim();
             
-            if (!token_val || !db_id_val) {
-                alert("Пожалуйста, заполните оба поля перед сохранением!");
+            // Валидация на заполненность всех полей
+            if (!token_val || !db_id_val || !gemini_val) {
+                alert("Пожалуйста, заполните ВСЕ три поля перед сохранением!");
                 return;
             }
 
-            // Формируем JSON-пакет данных
-            let data = {
+            // Упаковываем все данные в один JSON
+            let configData = {
                 notion_token: token_val,
-                notion_db_id: db_id_val
+                notion_db_id: db_id_val,
+                gemini_key: gemini_val
             };
 
-            // Отправляем данные боту и закрываем окно
-            tg.sendData(JSON.stringify(data));
+            // Отправляем пакет данных обратно в чат боту и закрываем мини-приложение
+            tg.sendData(JSON.stringify(configData));
             tg.close();
         });
     </script>

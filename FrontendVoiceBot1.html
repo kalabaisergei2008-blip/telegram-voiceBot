@@ -6,205 +6,183 @@
     <title>Настройка VoiceBot</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Строгая черно-бело-серая палитра с оранжевыми акцентами */
-        :root {
-            --bg-main: #0a0a0a;
-            --bg-card: #141414;
-            --text-main: #ffffff;
-            --text-muted: #888888;
-            --accent: #ff6b00; /* Яркий оранжевый */
-            --accent-hover: #e05e00;
-            --border: #222222;
-        }
-
+        /* Адаптивный дизайн в стиле Telegram */
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            padding: 20px;
+            background-color: var(--tg-theme-secondary-bg-color, #f4f4f5);
+            color: var(--tg-theme-text-color, #000000);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            box-sizing: border-box;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        h3 { 
-            text-align: center; 
-            margin: 0 0 24px 0; 
-            font-size: 16px; 
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-main);
-        }
-        
-        /* Минималистичные спойлеры */
-        details {
-            background-color: var(--bg-card);
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border);
-        }
-        
-        summary {
+        h3 {
+            font-size: 14px;
             font-weight: 600;
-            cursor: pointer;
-            color: var(--accent);
-            outline: none;
-            user-select: none;
-            font-size: 13px;
             text-transform: uppercase;
+            color: var(--tg-theme-hint-color, #707579);
+            margin: 0 0 -10px 5px;
             letter-spacing: 0.5px;
         }
-        
-        ol { 
-            margin: 10px 0 0 16px; 
-            padding: 0; 
-            color: var(--text-muted);
-            font-size: 13px;
+
+        /* Карточки с инструкциями */
+        .section {
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        
-        li { 
-            margin-bottom: 6px; 
-            line-height: 1.4; 
+
+        details {
+            margin-bottom: 12px;
         }
-        
-        a {
-            color: var(--text-main);
-            text-decoration: underline;
+
+        summary {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--tg-theme-link-color, #248bcf);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
         }
-        
-        .attention {
-            color: var(--accent);
-            font-weight: bold;
+
+        summary::before {
+            content: 'ℹ️';
+            margin-right: 8px;
+            font-size: 14px;
         }
+
+        ol {
+            margin: 12px 0 0 20px;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--tg-theme-text-color, #000000);
+        }
+
+        li { margin-bottom: 8px; }
+
+        a { color: var(--tg-theme-link-color, #248bcf); text-decoration: none; }
+        a:hover { text-decoration: underline; }
 
         /* Поля ввода */
-        .form-group { 
-            margin-bottom: 24px; 
-            margin-top: 4px; 
-        }
-        
-        label { 
-            display: block; 
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px; 
-        }
-        
-        input {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid var(--border);
-            background-color: var(--bg-card);
-            color: var(--text-main);
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
-        
-        input::placeholder {
-            color: #333333;
-        }
-        
-        input:focus { 
-            border-color: var(--accent); 
-            outline: none; 
-        }
-        
-        /* Кнопка */
-        button {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--accent);
-            color: #000000; /* Черный текст на оранжевом для контраста */
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: background-color 0.2s;
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             margin-top: 10px;
         }
-        
-        button:active { 
-            background-color: var(--accent-hover); 
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--tg-theme-hint-color, #707579);
+            margin-left: 4px;
+        }
+
+        input {
+            width: 100%;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            border: 1px solid var(--tg-theme-secondary-bg-color, #e0e0e0);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--tg-theme-link-color, #248bcf);
+        }
+
+        /* Кнопка в стиле Telegram */
+        button {
+            width: 100%;
+            background-color: var(--tg-theme-button-color, #248bcf);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        button:active {
+            opacity: 0.8;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--tg-theme-hint-color, #707579);
+            text-align: center;
+            margin-top: -10px;
         }
     </style>
 </head>
 <body>
 
-    <h3>⚙️ Подключение профиля VoiceBot</h3>
-    
-    <details>
-        <summary>Как получить Notion Token?</summary>
-        <ol>
-            <li>Перейдите на <a href="https://www.notion.so/my-integrations" target="_blank">notion.so/my-integrations</a>.</li>
-            <li>Нажмите <b>"+ New integration"</b>, введите любое имя и сохраните (Submit).</li>
-            <li>В меню <b>"Secrets"</b> нажмите <b>"Show"</b> -> <b>"Copy"</b> (токен начнется с <code>ntn_</code>).</li>
-            <li><span class="attention">Важно:</span> В Notion откройте свою базу, нажмите <b>"..."</b> вверху справа -> <b>"Add connections"</b> -> выберите вашего бота.</li>
-        </ol>
-    </details>
-    <div class="form-group">
-        <label for="token">Notion Integration Token</label>
-        <input type="text" id="token" placeholder="ntn_...">
+    <h3>Интеграция Notion</h3>
+    <div class="section">
+        <details>
+            <summary>Инструкция: Токен и ID</summary>
+            <ol>
+                <li>Создайте интеграцию на <a href="https://notion.so/my-integrations" target="_blank">notion.so/my-integrations</a> и скопируйте <b>Secret</b> (ntn_...).</li>
+                <li>В Notion откройте базу, нажмите <b>"..."</b> -> <b>"Add connections"</b> -> выберите бота.</li>
+                <li>ID базы — это 32 символа в ссылке страницы после последнего <code>/</code>.</li>
+            </ol>
+        </details>
+        <div class="input-group">
+            <label>Notion Token</label>
+            <input type="text" id="token" placeholder="ntn_...">
+            <label>Database ID</label>
+            <input type="text" id="db_id" placeholder="32-значный ID">
+        </div>
     </div>
 
-    <details>
-        <summary>Как найти Database ID?</summary>
-        <ol>
-            <li>Откройте вашу базу данных Notion как отдельную страницу (Open as page).</li>
-            <li>Скопируйте URL из строки браузера.</li>
-            <li>ID — это длинный 32-значный код после последнего слэша <code>/</code> и до знака <code>?</code>.</li>
-        </ol>
-    </details>
-    <div class="form-group">
-        <label for="db_id">Notion Database ID</label>
-        <input type="text" id="db_id" placeholder="32-значный код базы данных">
+    <h3>Интеллект (AI)</h3>
+    <div class="section">
+        <details>
+            <summary>Как получить API Key?</summary>
+            <ol>
+                <li>Перейдите на <a href="https://aistudio.google.com/" target="_blank">aistudio.google.com</a>.</li>
+                <li>Нажмите <b>"Get API key"</b> -> <b>"Create API key"</b>.</li>
+                <li>Скопируйте ключ (начинается с <code>AIzaSy</code>).</li>
+            </ol>
+        </details>
+        <div class="input-group">
+            <label>Gemini API Key</label>
+            <input type="password" id="gemini_key" placeholder="AIzaSy...">
+        </div>
     </div>
 
-    <details>
-        <summary>Как получить Gemini API Key?</summary>
-        <ol>
-            <li>Перейдите на сайт <a href="https://aistudio.google.com/" target="_blank">aistudio.google.com</a>.</li>
-            <li>В левом верхнем меню нажмите кнопку <b>"Get API key"</b>.</li>
-            <li>Нажмите <b>"Create API key"</b> и скопируйте полученную строку (начинается с <code>AIzaSy</code>).</li>
-        </ol>
-    </details>
-    <div class="form-group">
-        <label for="gemini_key">Gemini API Key</label>
-        <input type="password" id="gemini_key" placeholder="AIzaSy...">
-    </div>
-
-    <button id="save_btn">Сохранить конфигурацию</button>
+    <button id="save_btn">Сохранить настройки</button>
+    <p class="hint">Данные сохраняются только в вашем профиле бота</p>
 
     <script>
-        // Инициализация WebApp контекста Telegram
         let tg = window.Telegram.WebApp;
         tg.expand();
 
         document.getElementById('save_btn').addEventListener('click', () => {
-            let token_val = document.getElementById('token').value.trim();
-            let db_id_val = document.getElementById('db_id').value.trim();
-            let gemini_val = document.getElementById('gemini_key').value.trim();
-            
-            if (!token_val || !db_id_val || !gemini_val) {
-                alert("Пожалуйста, заполните все три поля перед сохранением!");
+            let config = {
+                notion_token: document.getElementById('token').value.trim(),
+                notion_db_id: document.getElementById('db_id').value.trim(),
+                gemini_key: document.getElementById('gemini_key').value.trim()
+            };
+
+            if (!config.notion_token || !config.notion_db_id || !config.gemini_key) {
+                tg.showAlert("Пожалуйста, заполните все поля");
                 return;
             }
 
-            // Формируем пакет данных для отправки бэкенду бота
-            let configData = {
-                notion_token: token_val,
-                notion_db_id: db_id_val,
-                gemini_key: gemini_val
-            };
-
-            // Отправляем данные боту и закрываем Mini App
-            tg.sendData(JSON.stringify(configData));
+            tg.sendData(JSON.stringify(config));
             tg.close();
         });
     </script>

@@ -171,10 +171,15 @@
         tg.expand();
 
         document.getElementById('save_btn').addEventListener('click', () => {
+            // Вычисляем смещение часового пояса устройства в часах (например, +3 для Киева)
+            let currentOffsetHours = -(new Date().getTimezoneOffset() / 60);
+
             let config = {
                 notion_token: document.getElementById('token').value.trim(),
                 notion_db_id: document.getElementById('db_id').value.trim(),
-                gemini_key: document.getElementById('gemini_key').value.trim()
+                notion_db_id: document.getElementById('db_id').value.trim(),
+                gemini_key: document.getElementById('gemini_key').value.trim(),
+                tz_offset: currentOffsetHours // Передаем часовой пояс бэкенду
             };
 
             if (!config.notion_token || !config.notion_db_id || !config.gemini_key) {
